@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Schema Input -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Schema</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="schema-input">Schema:</label>
+                    <textarea id="schema-input" style="min-height: 400px" class="form-control" readonly></textarea>
+                </div>
+            </div>
+            <div class="card-body">
+                <button type="button" id="get-schema-button" class="btn btn-primary">Get Schema</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Button -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" id="reset-state-button" class="btn btn-danger">Reset State</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Users Button -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <a href="/admin/users" class="btn btn-primary">Users</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get Schema Button
+    const getSchemaButton = document.getElementById("get-schema-button");
+    getSchemaButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch("/elements");
+            const schema = await response.json();
+            const schemaInput = document.getElementById("schema-input");
+            schemaInput.value = JSON.stringify(schema);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    // Reset State Button
+    const resetStateButton = document.getElementById("reset-state-button");
+    resetStateButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch("/reset_state", {method: "POST"});
+            if (response.status === 200) {
+                alert("Success");
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    });
+</script>
+
+{% endblock content %}

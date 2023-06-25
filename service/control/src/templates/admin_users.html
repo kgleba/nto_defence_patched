@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Users Table -->
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Users</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="users-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+    const usersTableBody = document.getElementById("users-table-body");
+
+    // Fetch Users
+    fetch("/get_users")
+            .then(response => response.json())
+            .then(users => {
+                users = users['users'];
+                for (var u = 0; u < users.length; u++) {
+                    user = users[u];
+                    const row = document.createElement("tr");
+                    const idCell = document.createElement("td");
+                    const usernameCell = document.createElement("td");
+                    const detailsCell = document.createElement("td");
+                    const detailsLink = document.createElement("a");
+
+                    idCell.textContent = user.uid;
+                    usernameCell.textContent = user.username;
+                    detailsLink.textContent = "Details";
+                    detailsLink.href = `/admin/user/${user.uid}`;
+                    detailsLink.className = "btn btn-primary";
+                    console.log(idCell, usernameCell, detailsCell);
+
+                    detailsCell.appendChild(detailsLink);
+                    row.appendChild(idCell);
+                    row.appendChild(usernameCell);
+                    row.appendChild(detailsCell);
+                    usersTableBody.appendChild(row);
+                }
+            })
+            .catch(error => console.error(error));
+</script>
+
+{% endblock scripts %}

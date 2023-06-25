@@ -1,0 +1,43 @@
+version: '3.4'
+services:
+  mongo:
+    image: mongo:4.4.11-rc1
+    restart: on-failure
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=3rJLGeVZoGtB4b1H
+    networks:
+      - xss
+  emulator:
+    build:
+      context: emulator/.
+      args:
+        - EMULATOR_PORT=8888
+    restart: unless-stopped
+    networks:
+      - xss
+  control:
+    build:
+      context: control/.
+      args:
+        - CONTROL_PORT=8080
+    restart: unless-stopped
+    environment:
+      - DB_USER=user
+      - DB_PASS=3rJLGeVZoGtB4b1H
+      - PROVIDER_HOST=emulator
+      - PROVIDER_PORT=8888
+      - PYTHONBUFFERED=1
+    networks:
+      - xss
+  xss:
+    build: nginx/.
+    container_name: xss
+    hostname: xss
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    networks:
+      - xss
+networks:
+  xss: { }

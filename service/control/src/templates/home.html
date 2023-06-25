@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- User Info -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>User Info</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> <span id="username"></span></p>
+                <p><strong>Email:</strong> <span id="email"></span></p>
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="new-password">New Password:</label>
+                        <input type="password" class="form-control" id="new-password" name="new_password">
+                    </div>
+                    <button type="button" id="change-password-button" class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fetch Elements Button -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" id="fetch-elements-button" class="btn btn-primary">Fetch Elements</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Elements Table -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div id="elements-table"></div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script src="/static/home.js"></script>
+<script>
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    $('#change-password-button').click(function () {
+        const user_id = parseInt(getCookie('user_id'));
+        console.log(user_id);
+        const password = document.querySelector('#new-password').value;
+
+        const loginData = {user_id: user_id, password: password};
+
+        fetch('/change_password', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `user_id=${user_id}&password=${encodeURIComponent(password)}`
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert("Success");
+                    } else {
+                        alert('Same password');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+    })
+</script>
+
+{% endblock scripts %}

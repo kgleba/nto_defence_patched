@@ -1,0 +1,52 @@
+{
+  "Elevator": {
+    "enabled": true,
+    "floor": 1
+  },
+  "Head office": {
+    "Cameras": {
+      "enabled": true
+    },
+    "Alarm": {
+      "enabled": true,
+      "sensitivity": 3
+    },
+    "Elevator": {
+      "enabled": true
+    }
+  },
+  "Developers": {
+    "Cameras": {
+      "enabled": true
+    },
+    "Alarm": {
+      "enabled": true,
+      "sensitivity": 3
+    }
+  },
+  "Security department": {
+    "Cameras": {
+      "enabled": true
+    },
+    "Alarm": {
+      "enabled": true,
+      "sensitivity": 3
+    }
+  },
+  "ServerRoom": {
+    "Cameras": {
+      "enabled": true
+    },
+    "Alarm": {
+      "enabled": true,
+      "sensitivity": 5
+    },
+    "Elevator": {
+      "enabled": true,
+      "floor": 1
+    },
+    "backup_url": "",
+    "backup_date": "",
+    "data": ""
+  }
+}

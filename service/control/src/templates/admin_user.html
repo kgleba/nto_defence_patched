@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- User Details -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>User Details</h4>
+            </div>
+            <div class="card-body" id="place">
+                <div class="form-group">
+                    <label for="username-input">Username:</label>
+                    <input id="username-input" type="text" class="form-control" value="" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email-input">Email:</label>
+                    <input id="email-input" type="email" class="form-control" value="" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="admin-checkbox">Admin:</label>
+                    <input id="admin-checkbox" type="checkbox" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="id-input">ID:</label>
+                    <input id="id-input" type="text" class="form-control" value="${user.uid}" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Permissions Input -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Permissions</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="permissions-input">Permissions:</label>
+                    <textarea id="permissions-input" style="min-height: 400px" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="card-body">
+                <button type="button" id="modify-permissions-button" class="btn btn-primary">Modify Permissions</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const user_id = parseInt(location.pathname.split("/").pop());
+
+    const getUser = async () => {
+        try {
+            const response = await fetch(`/get_user?user_id=${user_id}`);
+            const user = (await response.json()).user;
+            document.getElementById('username-input').value = user.username;
+            document.getElementById('email-input').value = user.email;
+            document.getElementById('admin-checkbox').checked = user.admin;
+            document.getElementById('id-input').value = user.uid;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    getUser();
+
+    // Get Permissions Button
+    const getPermissions = async () => {
+        try {
+            const response = await fetch(`/get_permissions?user_id=${user_id}`);
+            const permissions = await response.json();
+            const permissionsInput = document.getElementById("permissions-input");
+            permissionsInput.value = JSON.stringify(permissions);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    getPermissions();
+
+    // Modify Permissions Button
+    const modifyPermissionsButton = document.getElementById("modify-permissions-button");
+    modifyPermissionsButton.addEventListener("click", async () => {
+        try {
+            const permissionsInput = document.getElementById("permissions-input");
+            const permissions = JSON.parse(permissionsInput.value);
+            const response = await fetch("/set_permissions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({user_id: `${user_id}`, permissions: permissions})
+            });
+            if (response.status === 200) {
+                alert("Success");
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,61 @@
+{
+  "Section": {
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "Controller": {
+    "enable()": 3,
+    "disable()": 3,
+    "get_enabled()": 1,
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "ServerRoom": {
+    "set_backup_url(url)": 3,
+    "get_backup_url()": 1,
+    "backup()": 3,
+    "get_backup_date()": 1,
+    "update_data(data)": 3,
+    "send_backup()": 1,
+    "full_clean()": 3,
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "Alarm": {
+    "set_sensitivity(sensitivity)": 3,
+    "get_sensitivity()": 1,
+    "enable()": 3,
+    "disable()": 3,
+    "get_enabled()": 1,
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "Cameras": {
+    "get_image()": 1,
+    "enable()": 3,
+    "disable()": 3,
+    "get_enabled()": 1,
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "Elevator": {
+    "set_floor(floor)": 3,
+    "get_floor()": 1,
+    "enable()": 3,
+    "disable()": 3,
+    "get_enabled()": 1,
+    "get_type()": 1,
+    "get_elements()": 1,
+    "add_element(type,element)": 3
+  },
+  "inheritance": {
+    "Head office": "Section",
+    "Developers": "Section",
+    "Security department": "Section"
+  }
+}
